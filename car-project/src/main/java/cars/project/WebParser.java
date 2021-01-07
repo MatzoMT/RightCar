@@ -14,9 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-/**
- * Represents an iTunes GalleryApp.
- */
+
 public class WebParser {
     Scanner keyboard = new Scanner(System.in);
     int sales = 0;
@@ -58,6 +56,7 @@ public class WebParser {
         System.out.println(sales);
         System.out.println(numberComplaints);
         System.out.println("SCORE: " + getReliability(numberComplaints, sales));
+        System.out.println("A lower score indicates greater reliability.");
     } // searchData
 
     public void printSales(String year, String make, String model) {

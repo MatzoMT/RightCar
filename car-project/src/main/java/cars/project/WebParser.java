@@ -89,6 +89,9 @@ public class WebParser {
 
     }
 
+    /**
+     * Returns the valid model years given in the NHTSA complaints website.
+     */
     public void getModelYears() {
         String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle?format=json";
         try {
@@ -128,11 +131,41 @@ public class WebParser {
          */
     } // getModelYears
 
+    /**
+     * Returns the car makes registered with the selected model year.
+     */
+    public void getMakes(int modelYear) {
+        String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + modelYear + "?format=json";
+        try {
+            URL url = new URL(link);
+            InputStream is = url.openStream();
+            InputStreamReader reader = new InputStreamReader(is);
+            JsonElement je = JsonParser.parseReader(reader);
+            JsonObject root = je.getAsJsonObject();
+            JsonObject result;
+            JsonElement make;
+            // Obtains primitive type at Json category "Count" containing number of
+            // complaints
+            JsonArray jsonArray = root.getAsJsonArray("Results");
+            System.out.println("Number" + jsonArray.size());
+            modelYears = new int[jsonArray.size()];
+            for (int i = 0; i < jsonArray.size(); i++) {
+                result = jsonArray.get(i).getAsJsonObject();
+                make = result.get("Make");
+                System.out.println(make);
+            } // for
+        } catch (MalformedURLException mue) {
+
+        } catch (IOException ioe) {
+
+        } // try-catch
+    } // getModels
+
     public static void main(String[] args) {
 
         WebParser wp = new WebParser();
         wp.getModelYears();
-
+        wp.getMakes(2019);
         // wp.getSales();
     } // main
 

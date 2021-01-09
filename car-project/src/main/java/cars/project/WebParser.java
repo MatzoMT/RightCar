@@ -15,11 +15,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-
 public class WebParser {
     Scanner keyboard = new Scanner(System.in);
     int sales = 0;
     int numberComplaints = 0;
+    int[] modelYears;
 
     public void searchData() {
         String year = keyboard.nextLine();
@@ -80,22 +80,60 @@ public class WebParser {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } 
+        }
     } // printSales
 
     public double getReliability(double numberComplaints, double sales) {
         double score = (numberComplaints / sales) * 100;
         return score;
+
     }
 
-    /*
+    public void getModelYears() {
+        String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle?format=json";
+        try {
+            URL url = new URL(link);
+            InputStream is = url.openStream();
+            InputStreamReader reader = new InputStreamReader(is);
+            JsonElement je = JsonParser.parseReader(reader);
+            JsonObject root = je.getAsJsonObject();
+            JsonObject result;
+            JsonElement my;
+            // Obtains primitive type at Json category "Count" containing number of
+            // complaints
+            JsonArray jsonArray = root.getAsJsonArray("Results");
+            System.out.println("Number" + jsonArray.size());
+            modelYears = new int[jsonArray.size()];
+            for (int i = 0; i < jsonArray.size(); i++) {
+                result = jsonArray.get(i).getAsJsonObject();
+                my = result.get("ModelYear");
+                System.out.println(i);
+                modelYears[i] = my.getAsInt();
+            } // for
+        } catch (MalformedURLException mue) {
+
+        } catch (IOException ioe) {
+
+        } // try-catch
+        /*
+         * try { URL url = new URL(searchUrl); InputStream is = url.openStream();
+         * InputStreamReader reader = new InputStreamReader(is); JsonElement je =
+         * JsonParser.parseReader(reader); JsonObject root = je.getAsJsonObject(); //
+         * Obtains primitive type at Json category "Count" containing number of //
+         * complaints JsonPrimitive complaints = root.getAsJsonPrimitive("Count");
+         * numberComplaints = complaints.getAsInt();
+         * System.out.println("Number of Complaints: " + complaints); } catch
+         * (MalformedURLException mue) { System.out.println("Error: URL invalid."); }
+         * catch (IOException ioe) { System.out.println("ioe exception"); }
+         */
+    } // getModelYears
+
     public static void main(String[] args) {
-        while (true) {
-            WebParser wp = new WebParser();
-            wp.searchData();
-        }
+
+        WebParser wp = new WebParser();
+        wp.getModelYears();
+
         // wp.getSales();
     } // main
-    */
 
 } // WebParser

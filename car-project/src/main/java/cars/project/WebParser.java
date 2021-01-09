@@ -2,6 +2,7 @@ package cars.project;
 
 import com.google.gson.*;
 
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -79,7 +80,7 @@ public class WebParser {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } 
     } // printSales
 
     public double getReliability(double numberComplaints, double sales) {
@@ -87,6 +88,7 @@ public class WebParser {
         return score;
     }
 
+    /*
     public static void main(String[] args) {
         while (true) {
             WebParser wp = new WebParser();
@@ -94,5 +96,6 @@ public class WebParser {
         }
         // wp.getSales();
     } // main
+    */
 
 } // WebParser

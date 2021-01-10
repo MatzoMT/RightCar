@@ -9,7 +9,7 @@ public class CarsDriver {
      */
     public static void main(String[] args) {
         
-        /*
+        
         try {
             Application.launch(CarsApp.class, args);
         } catch (UnsupportedOperationException e) {
@@ -19,6 +19,6 @@ public class CarsDriver {
             System.err.println("out and logging back in.");
             System.exit(1);
         } // try
-        */
+        
     } // main
 }

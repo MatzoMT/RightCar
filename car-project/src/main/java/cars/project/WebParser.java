@@ -19,7 +19,6 @@ public class WebParser {
     Scanner keyboard = new Scanner(System.in);
     int sales = 0;
     int numberComplaints = 0;
-    int[] modelYears;
 
     public void searchData() {
         String year = keyboard.nextLine();
@@ -92,8 +91,9 @@ public class WebParser {
     /**
      * Returns the valid model years given in the NHTSA complaints website.
      */
-    public void getModelYears() {
+    public int[] getModelYears() {
         String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle?format=json";
+        int[] modelYears = new int[]{0};
         try {
             URL url = new URL(link);
             InputStream is = url.openStream();
@@ -105,12 +105,10 @@ public class WebParser {
             // Obtains primitive type at Json category "Count" containing number of
             // complaints
             JsonArray jsonArray = root.getAsJsonArray("Results");
-            System.out.println("Number" + jsonArray.size());
             modelYears = new int[jsonArray.size()];
             for (int i = 0; i < jsonArray.size(); i++) {
                 result = jsonArray.get(i).getAsJsonObject();
                 my = result.get("ModelYear");
-                System.out.println(i);
                 modelYears[i] = my.getAsInt();
             } // for
         } catch (MalformedURLException mue) {
@@ -118,17 +116,7 @@ public class WebParser {
         } catch (IOException ioe) {
 
         } // try-catch
-        /*
-         * try { URL url = new URL(searchUrl); InputStream is = url.openStream();
-         * InputStreamReader reader = new InputStreamReader(is); JsonElement je =
-         * JsonParser.parseReader(reader); JsonObject root = je.getAsJsonObject(); //
-         * Obtains primitive type at Json category "Count" containing number of //
-         * complaints JsonPrimitive complaints = root.getAsJsonPrimitive("Count");
-         * numberComplaints = complaints.getAsInt();
-         * System.out.println("Number of Complaints: " + complaints); } catch
-         * (MalformedURLException mue) { System.out.println("Error: URL invalid."); }
-         * catch (IOException ioe) { System.out.println("ioe exception"); }
-         */
+        return modelYears;
     } // getModelYears
 
     /**
@@ -148,7 +136,7 @@ public class WebParser {
             // complaints
             JsonArray jsonArray = root.getAsJsonArray("Results");
             System.out.println("Number" + jsonArray.size());
-            modelYears = new int[jsonArray.size()];
+          //  modelYears = new int[jsonArray.size()];
             for (int i = 0; i < jsonArray.size(); i++) {
                 result = jsonArray.get(i).getAsJsonObject();
                 make = result.get("Make");
@@ -167,6 +155,7 @@ public class WebParser {
     public void getModels(int modelYear, String make) {
         String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + modelYear + "/make/" + make.toLowerCase() + "?format=json";
         try {
+            String[] models;
             URL url = new URL(link);
             InputStream is = url.openStream();
             InputStreamReader reader = new InputStreamReader(is);
@@ -178,16 +167,18 @@ public class WebParser {
             // complaints
             JsonArray jsonArray = root.getAsJsonArray("Results");
             System.out.println("Number" + jsonArray.size());
-            modelYears = new int[jsonArray.size()];
+            models = new String[jsonArray.size()];
             for (int i = 0; i < jsonArray.size(); i++) {
                 result = jsonArray.get(i).getAsJsonObject();
                 model = result.get("Model");
                 System.out.println(model);
+                models[i] = model.getAsString();
             } // for
+         //   return models;
         } catch (MalformedURLException mue) {
-
+            System.out.println("error");
         } catch (IOException ioe) {
-
+            System.out.println("error");
         } // try-catch
     } // getModels
 

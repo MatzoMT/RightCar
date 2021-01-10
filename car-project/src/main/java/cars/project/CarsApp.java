@@ -27,10 +27,19 @@ import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import javafx.scene.control.ComboBox;
 
 public class CarsApp extends Application {
     public void start(Stage stage) {
         HBox habox = new HBox();
+        ComboBox yearComboBox = new ComboBox();
+
+        WebParser webParser = new WebParser();
+        int[] modelYears = webParser.getModelYears();
+        for (int i = 0; i < webParser.getModelYears().length; i++) {
+            yearComboBox.getItems().add(modelYears[i]);
+        } // for
+        habox.getChildren().add(yearComboBox);
         Scene title = new Scene(habox, 300, 400);
         stage.setScene(title);
         stage.setTitle("BetterCar");

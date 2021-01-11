@@ -122,8 +122,9 @@ public class WebParser {
     /**
      * Returns the car makes registered with the selected model year.
      */
-    public void getMakes(int modelYear) {
+    public String[] getMakes(int modelYear) {
         String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + modelYear + "?format=json";
+        String[] makes = new String[]{""};
         try {
             URL url = new URL(link);
             InputStream is = url.openStream();
@@ -135,18 +136,19 @@ public class WebParser {
             // Obtains primitive type at Json category "Count" containing number of
             // complaints
             JsonArray jsonArray = root.getAsJsonArray("Results");
-            System.out.println("Number" + jsonArray.size());
+            makes = new String[jsonArray.size()];
           //  modelYears = new int[jsonArray.size()];
             for (int i = 0; i < jsonArray.size(); i++) {
                 result = jsonArray.get(i).getAsJsonObject();
                 make = result.get("Make");
-                System.out.println(make);
+                makes[i] = make.getAsString();
             } // for
         } catch (MalformedURLException mue) {
 
         } catch (IOException ioe) {
 
         } // try-catch
+        return makes;
     } // getMakes
 
 /**

@@ -30,20 +30,60 @@ import javafx.util.Duration;
 import javafx.scene.control.ComboBox;
 
 public class CarsApp extends Application {
-    public void start(Stage stage) {
-        HBox habox = new HBox();
-        ComboBox yearComboBox = new ComboBox();
+    HBox habox = new HBox();
+    ComboBox<Integer> yearComboBox = new ComboBox();
+    ComboBox<String> makeComboBox = new ComboBox();
+    int selectedYear;
 
+    public void start(Stage stage) {
         WebParser webParser = new WebParser();
         int[] modelYears = webParser.getModelYears();
         for (int i = 0; i < webParser.getModelYears().length; i++) {
             yearComboBox.getItems().add(modelYears[i]);
         } // for
-        habox.getChildren().add(yearComboBox);
+
+        yearComboBox.setOnAction((event) -> {        
+            System.out.println(yearComboBox.getValue());
+            selectedYear = yearComboBox.getValue();
+            String[] makes = webParser.getMakes(yearComboBox.getValue());
+            for (int i = 0; i < webParser.getMakes(yearComboBox.getValue()).length; i++) {
+                System.out.println(i);
+                makeComboBox.getItems().add(makes[i]);
+            }
+            System.out.println("DONEEEEE");
+        });
+
+        habox.getChildren().addAll(yearComboBox, makeComboBox);
         Scene title = new Scene(habox, 300, 400);
+        getSelectedYear();
         stage.setScene(title);
         stage.setTitle("BetterCar");
         stage.sizeToScene();
-        stage.show();    
+        stage.show();
+
     } // start
+
+    public void getSelectedYear() {
+        /*
+        boolean yearSelected = false;
+        while (true) {
+            System.out.println("iterating");
+            System.out.println(yearComboBox.getValue());
+
+        }
+        */
+    } // getSelectedYear
+
+    /**
+     * Method that allows for the creation of a new {@code Thread} to operate
+     * multiple parts of the code simultaneously.
+     *
+     * @param runnable an object that implements {@code Runnable} or is runnable
+     */
+    private static void runNow(Runnable runnable) throws InterruptedException {
+        Thread t = new Thread(runnable);
+        t.setDaemon(true);
+        t.start();
+    } // runNow
+
 }

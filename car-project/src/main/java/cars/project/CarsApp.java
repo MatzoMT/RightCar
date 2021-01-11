@@ -33,7 +33,9 @@ public class CarsApp extends Application {
     HBox habox = new HBox();
     ComboBox<Integer> yearComboBox = new ComboBox();
     ComboBox<String> makeComboBox = new ComboBox();
+    ComboBox<String> modelComboBox = new ComboBox();
     int selectedYear;
+    String selectedMake;
 
     public void start(Stage stage) {
         WebParser webParser = new WebParser();
@@ -45,15 +47,24 @@ public class CarsApp extends Application {
         yearComboBox.setOnAction((event) -> {        
             System.out.println(yearComboBox.getValue());
             selectedYear = yearComboBox.getValue();
-            String[] makes = webParser.getMakes(yearComboBox.getValue());
-            for (int i = 0; i < webParser.getMakes(yearComboBox.getValue()).length; i++) {
+            String[] makes = WebParser.getMakes(yearComboBox.getValue());
+            for (int i = 0; i < WebParser.getMakes(yearComboBox.getValue()).length; i++) {
                 System.out.println(i);
                 makeComboBox.getItems().add(makes[i]);
             }
             System.out.println("DONEEEEE");
         });
 
-        habox.getChildren().addAll(yearComboBox, makeComboBox);
+        makeComboBox.setOnAction((event) -> {
+            selectedMake = makeComboBox.getValue();
+            String[] models = WebParser.getModels(yearComboBox.getValue(), makeComboBox.getValue());
+            for (int i = 0; i < models.length; i++) {
+                System.out.println(i);
+                modelComboBox.getItems().add(models[i]);
+            } // for
+        });
+
+        habox.getChildren().addAll(yearComboBox, makeComboBox, modelComboBox);
         Scene title = new Scene(habox, 300, 400);
         getSelectedYear();
         stage.setScene(title);

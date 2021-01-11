@@ -154,10 +154,10 @@ public class WebParser {
 /**
      * Returns the car models registered with the selected automaker and model year.
      */
-    public void getModels(int modelYear, String make) {
+    public static String[] getModels(int modelYear, String make) {
         String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + modelYear + "/make/" + make.toLowerCase() + "?format=json";
+        String[] models = new String[]{""};
         try {
-            String[] models;
             URL url = new URL(link);
             InputStream is = url.openStream();
             InputStreamReader reader = new InputStreamReader(is);
@@ -182,6 +182,7 @@ public class WebParser {
         } catch (IOException ioe) {
             System.out.println("error");
         } // try-catch
+        return models;
     } // getModels
 
     public static void main(String[] args) {

@@ -48,6 +48,7 @@ public class CarsApp extends Application {
             System.out.println(yearComboBox.getValue());
             selectedYear = yearComboBox.getValue();
             String[] makes = WebParser.getMakes(yearComboBox.getValue());
+            makeComboBox.getItems().clear();
             for (int i = 0; i < WebParser.getMakes(yearComboBox.getValue()).length; i++) {
                 System.out.println(i);
                 makeComboBox.getItems().add(makes[i]);
@@ -58,12 +59,16 @@ public class CarsApp extends Application {
         makeComboBox.setOnAction((event) -> {
             selectedMake = makeComboBox.getValue();
             String[] models = WebParser.getModels(yearComboBox.getValue(), makeComboBox.getValue());
+            modelComboBox.getItems().clear();
             for (int i = 0; i < models.length; i++) {
                 System.out.println(i);
                 modelComboBox.getItems().add(models[i]);
             } // for
         });
 
+        yearComboBox.setPromptText("Year");
+        makeComboBox.setPromptText("Make");
+        modelComboBox.setPromptText("Model");
         habox.getChildren().addAll(yearComboBox, makeComboBox, modelComboBox);
         Scene title = new Scene(habox, 300, 400);
         getSelectedYear();

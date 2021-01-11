@@ -11,8 +11,15 @@ public class DataCollector {
             FileWriter csvWriter = new FileWriter("years.csv", false);
             csvWriter.write("YEAR,MAKE\n");
             for (int i = 0; i < modelYears.length; i++) {
+                String[] makes = WebParser.getMakes(modelYears[i]);
                 if (!(String.valueOf(modelYears[i]).equals("9999"))) {
-                    csvWriter.write(String.valueOf(modelYears[i]));
+                    csvWriter.write(String.valueOf(modelYears[i]) + ",");
+                    for (int j = 0; j < makes.length; j++) {
+                        csvWriter.write(makes[j]);
+                        if (j != makes.length - 1) {
+                            csvWriter.write(",");
+                        }
+                    }
                     csvWriter.write("\n");
                 }
             } // for

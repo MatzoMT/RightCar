@@ -122,7 +122,7 @@ public class WebParser {
     /**
      * Returns the car makes registered with the selected model year.
      */
-    public String[] getMakes(int modelYear) {
+    public static String[] getMakes(int modelYear) {
         String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + modelYear + "?format=json";
         String[] makes = new String[]{""};
         try {

@@ -7,8 +7,15 @@ public class DataCollector {
 
     public void writeToCsv() {
         try {
-            FileWriter csvWriter = new FileWriter("years.csv");
-            csvWriter.write("YEAR,MAKE");
+            int[] modelYears = WebParser.getModelYears();
+            FileWriter csvWriter = new FileWriter("years.csv", false);
+            csvWriter.write("YEAR,MAKE\n");
+            for (int i = 0; i < modelYears.length; i++) {
+                if (!(String.valueOf(modelYears[i]).equals("9999"))) {
+                    csvWriter.write(String.valueOf(modelYears[i]));
+                    csvWriter.write("\n");
+                }
+            } // for
             System.out.println("completed");
             csvWriter.flush();
             csvWriter.close();

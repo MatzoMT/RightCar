@@ -91,7 +91,7 @@ public class WebParser {
     /**
      * Returns the valid model years given in the NHTSA complaints website.
      */
-    public int[] getModelYears() {
+    public static int[] getModelYears() {
         String link = "https://webapi.nhtsa.gov/api/Recalls/vehicle?format=json";
         int[] modelYears = new int[]{0};
         try {

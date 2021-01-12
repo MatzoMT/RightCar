@@ -66,6 +66,13 @@ public class CarsApp extends Application {
             } // for
         });
 
+        habox.setBackground(new Background(new BackgroundFill(Color.rgb(22,33,40), CornerRadii.EMPTY,
+        Insets.EMPTY)));
+
+        yearComboBox.setStyle("-fx-font: 12px \"Verdana\";");
+        makeComboBox.setStyle("-fx-font: 12px \"Verdana\";");
+        modelComboBox.setStyle("-fx-font: 12px \"Verdana\";");
+
         yearComboBox.setPromptText("Year");
         makeComboBox.setPromptText("Make");
         modelComboBox.setPromptText("Model");

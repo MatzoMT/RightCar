@@ -44,6 +44,8 @@ public class CarsApp extends Application {
         WebParser webParser = new WebParser();
         int[] modelYears = webParser.getModelYears();
         Text rightCar = new Text("RightCar");
+        Image logo = new Image("file:resources/logo.png", 50, 50, false, false);
+        ImageView logoView = new ImageView(logo);
         for (int i = 0; i < webParser.getModelYears().length; i++) {
             if (modelYears[i] != 9999) {
                 yearComboBox.getItems().add(modelYears[i]);
@@ -72,10 +74,12 @@ public class CarsApp extends Application {
             } // for
         });
 
-        rightCar.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        titleBar.getChildren().add(rightCar);
-        selectionsHBox.setBackground(
-                new Background(new BackgroundFill(Color.rgb(22, 33, 40), CornerRadii.EMPTY, Insets.EMPTY)));
+        rightCar.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        rightCar.setFill(Color.WHITE);
+        titleBar.getChildren().add(logoView);
+         titleBar.getChildren().add(rightCar);
+        titleBar.setBackground(
+                new Background(new BackgroundFill(Color.rgb(24, 65, 68), CornerRadii.EMPTY, Insets.EMPTY)));
 
         yearComboBox.setStyle("-fx-font: 12px \"Verdana\";");
         makeComboBox.setStyle("-fx-font: 12px \"Verdana\";");

@@ -30,7 +30,8 @@ import javafx.util.Duration;
 import javafx.scene.control.ComboBox;
 
 public class CarsApp extends Application {
-    HBox habox = new HBox();
+    HBox titleBar = new HBox();
+    HBox selectionsHBox = new HBox();
     ComboBox<Integer> yearComboBox = new ComboBox();
     ComboBox<String> makeComboBox = new ComboBox();
     ComboBox<String> modelComboBox = new ComboBox();
@@ -38,13 +39,18 @@ public class CarsApp extends Application {
     String selectedMake;
 
     public void start(Stage stage) {
+        BorderPane bp = new BorderPane();
+        VBox window = new VBox();
         WebParser webParser = new WebParser();
         int[] modelYears = webParser.getModelYears();
+        Text rightCar = new Text("RightCar");
         for (int i = 0; i < webParser.getModelYears().length; i++) {
-            yearComboBox.getItems().add(modelYears[i]);
+            if (modelYears[i] != 9999) {
+                yearComboBox.getItems().add(modelYears[i]);
+            }
         } // for
 
-        yearComboBox.setOnAction((event) -> {        
+        yearComboBox.setOnAction((event) -> {
             System.out.println(yearComboBox.getValue());
             selectedYear = yearComboBox.getValue();
             String[] makes = WebParser.getMakes(yearComboBox.getValue());
@@ -66,8 +72,10 @@ public class CarsApp extends Application {
             } // for
         });
 
-        habox.setBackground(new Background(new BackgroundFill(Color.rgb(22,33,40), CornerRadii.EMPTY,
-        Insets.EMPTY)));
+        rightCar.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        titleBar.getChildren().add(rightCar);
+        selectionsHBox.setBackground(
+                new Background(new BackgroundFill(Color.rgb(22, 33, 40), CornerRadii.EMPTY, Insets.EMPTY)));
 
         yearComboBox.setStyle("-fx-font: 12px \"Verdana\";");
         makeComboBox.setStyle("-fx-font: 12px \"Verdana\";");
@@ -76,8 +84,12 @@ public class CarsApp extends Application {
         yearComboBox.setPromptText("Year");
         makeComboBox.setPromptText("Make");
         modelComboBox.setPromptText("Model");
-        habox.getChildren().addAll(yearComboBox, makeComboBox, modelComboBox);
-        Scene title = new Scene(habox, 300, 400);
+        selectionsHBox.getChildren().addAll(yearComboBox, makeComboBox, modelComboBox);
+       // window.getChildren().addAll(titleBar, selectionsHBox);
+        bp.setTop(titleBar);
+        bp.setCenter(selectionsHBox);
+       // bp.getChildren().addAll(titleBar, selectionsHBox);
+        Scene title = new Scene(bp);
         getSelectedYear();
         stage.setScene(title);
         stage.setTitle("BetterCar");
@@ -88,13 +100,11 @@ public class CarsApp extends Application {
 
     public void getSelectedYear() {
         /*
-        boolean yearSelected = false;
-        while (true) {
-            System.out.println("iterating");
-            System.out.println(yearComboBox.getValue());
-
-        }
-        */
+         * boolean yearSelected = false; while (true) { System.out.println("iterating");
+         * System.out.println(yearComboBox.getValue());
+         * 
+         * }
+         */
     } // getSelectedYear
 
     /**

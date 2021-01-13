@@ -1,10 +1,15 @@
 package cars.project;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Properties;
 
 public class DataCollector {
 
+    /*
     public void writeToCsv() {
         try {
             int[] modelYears = WebParser.getModelYears();
@@ -30,9 +35,26 @@ public class DataCollector {
             System.out.println("IOException occurred");
         }
     }
-
+*/
     public static void main(String[] args) {
-        DataCollector dc = new DataCollector();
-        dc.writeToCsv();
+        try {
+            /* 
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String connectionUrl = "jdbc:sqlserver://localhost:3306;" +  
+   "databaseName=car_project;user=root;password=password;";  
+            Connection con = DriverManager.getConnection(connectionUrl);
+            **/
+            Connection conn = null;
+            Properties connectionProps = new Properties();
+            connectionProps.put("user", "root");
+            connectionProps.put("password", "password");
+            conn = DriverManager.getConnection(
+                   "mariaDB:mysql://localhost:3306/",
+                   connectionProps);
+        } catch (SQLException sqle) {
+            System.err.println(sqle.getMessage()); 
+        } 
+        //  DataCollector dc = new DataCollector();
+      //  dc.writeToCsv();
     }
 }

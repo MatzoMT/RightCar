@@ -24,32 +24,25 @@ def parseYears():
             year_site_json = json.loads(plain_text_year)
             
             for make in year_site_json["Results"]:
-                url_make = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + year["ModelYear"] + "/make/" + make["Make"] + "?format=json"
-                source_code_make = requests.get(url_make)
-                plain_text_make = source_code_make.text
-                make_site_json = json.loads(plain_text_make)
+                try:
+                    url_make = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + year["ModelYear"] + "/make/" + make["Make"] + "?format=json"
+                    source_code_make = requests.get(url_make)
+                    plain_text_make = source_code_make.text
+                    make_site_json = json.loads(plain_text_make)
+                except:
+                    print("ERROR")
 
                 for model in make_site_json["Results"]:
                     print(year["ModelYear"] + " " + make["Make"] + " " + model["Model"])
+                    mycursor = mydb.cursor()
+                    value = [year["ModelYear"],make["Make"],model["Model"]]
+                    print(value)
+                    mycursor.execute('INSERT INTO car_information (Year, Make, Model) VALUES (%s,%s,%s)',value)
+                    mydb.commit()
                 #print(year["ModelYear"] + make["Make"])
                 
 
             
-
-
-    mycursor = mydb.cursor()
-
-"""
-    #sql = "INSERT INTO car_information (Year) VALUES ()"
-    for year in site_json["Results"]:
-        if year["ModelYear"] != "9999":
-            sql = "INSERT INTO car_information (Year) VALUES (%s)"
-            print(year["ModelYear"])
-            val = (year["ModelYear"])
-            mycursor.execute(sql, val)
-            mydb.commit()
-    print(mycursor.rowcount, "record inserted.")
-    """
 
 
 

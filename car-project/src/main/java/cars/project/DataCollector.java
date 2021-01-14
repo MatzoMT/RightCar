@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class DataCollector {
 
@@ -24,6 +25,13 @@ public class DataCollector {
      * catch (IOException ioe) { System.out.println("IOException occurred"); } }
      */
     public static void main(String[] args) {
+        getModelYears();
+
+    }
+
+    public static ArrayList<Integer> getModelYears() {
+
+        ArrayList<Integer> yearsList = new ArrayList<>();
         String url = "jdbc:mysql://localhost:3306/car_project";
         String username = "root";
         String password = "password";
@@ -33,15 +41,19 @@ public class DataCollector {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             System.out.println("Database connected!");
             String SQL = "select distinct Year from car_project.car_information;";
-            Statement statement = connection.createStatement( );
+            Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(SQL);
             while (rs.next()) {
                 int year = rs.getInt("Year");
-                System.out.println(year);
+                yearsList.add(year);
             }
+           
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
-       
-    }
+        for (int i = 0; i < yearsList.size(); i++) {
+            System.out.println(yearsList.get(i).toString());
+        }
+        return yearsList;
+    } // getModelYears
 }

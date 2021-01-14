@@ -1,6 +1,7 @@
 package cars.project;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -42,15 +43,22 @@ public class CarsApp extends Application {
         BorderPane bp = new BorderPane();
         VBox window = new VBox();
         WebParser webParser = new WebParser();
-        int[] modelYears = webParser.getModelYears();
+        DataCollector dataCollector = new DataCollector();
+        ArrayList<Integer> modelYears = dataCollector.getModelYears();
+       // int[] modelYears = webParser.getModelYears();
         Text rightCar = new Text("RightCar");
         Image logo = new Image("file:resources/logo.png", 50, 50, false, false);
         ImageView logoView = new ImageView(logo);
+        for (int i = 0; i < modelYears.size(); i++) {
+            yearComboBox.getItems().add(modelYears.get(i));
+        }
+        /*
         for (int i = 0; i < webParser.getModelYears().length; i++) {
             if (modelYears[i] != 9999) {
                 yearComboBox.getItems().add(modelYears[i]);
             }
         } // for
+        */
 
         yearComboBox.setOnAction((event) -> {
             System.out.println(yearComboBox.getValue());

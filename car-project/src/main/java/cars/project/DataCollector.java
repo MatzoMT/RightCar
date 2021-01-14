@@ -30,7 +30,6 @@ public class DataCollector {
     }
 
     public static ArrayList<Integer> getModelYears() {
-
         ArrayList<Integer> yearsList = new ArrayList<>();
         String url = "jdbc:mysql://localhost:3306/car_project";
         String username = "root";
@@ -56,4 +55,34 @@ public class DataCollector {
         }
         return yearsList;
     } // getModelYears
+
+    /**
+     * Returns the car makes registered with the selected model year.
+     */
+    public static ArrayList<String> getMakes(int modelYear) {
+        ArrayList<String> makesList = new ArrayList<>();
+        String url = "jdbc:mysql://localhost:3306/car_project";
+        String username = "root";
+        String password = "password";
+
+        System.out.println("Connecting database...");
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            System.out.println("Database connected!");
+            String SQL = "select distinct Make from car_project.car_information where year='" + modelYear + "';";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(SQL);
+            while (rs.next()) {
+                String make = rs.getString("Make");
+                makesList.add(make);
+            }
+           
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot connect the database!", e);
+        }
+        for (int i = 0; i < makesList.size(); i++) {
+            System.out.println(makesList.get(i).toString());
+        }
+        return makesList;
+    } // getMakes
 }

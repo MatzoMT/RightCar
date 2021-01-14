@@ -45,29 +45,21 @@ public class CarsApp extends Application {
         WebParser webParser = new WebParser();
         DataCollector dataCollector = new DataCollector();
         ArrayList<Integer> modelYears = dataCollector.getModelYears();
-       // int[] modelYears = webParser.getModelYears();
         Text rightCar = new Text("RightCar");
         Image logo = new Image("file:resources/logo.png", 50, 50, false, false);
         ImageView logoView = new ImageView(logo);
         for (int i = 0; i < modelYears.size(); i++) {
             yearComboBox.getItems().add(modelYears.get(i));
         }
-        /*
-        for (int i = 0; i < webParser.getModelYears().length; i++) {
-            if (modelYears[i] != 9999) {
-                yearComboBox.getItems().add(modelYears[i]);
-            }
-        } // for
-        */
 
         yearComboBox.setOnAction((event) -> {
             System.out.println(yearComboBox.getValue());
             selectedYear = yearComboBox.getValue();
-            String[] makes = WebParser.getMakes(yearComboBox.getValue());
+            ArrayList<String> makes = DataCollector.getMakes(yearComboBox.getValue());
             makeComboBox.getItems().clear();
-            for (int i = 0; i < WebParser.getMakes(yearComboBox.getValue()).length; i++) {
+            for (int i = 0; i < makes.size(); i++) {
                 System.out.println(i);
-                makeComboBox.getItems().add(makes[i]);
+                makeComboBox.getItems().add(makes.get(i));
             }
             System.out.println("DONEEEEE");
         });

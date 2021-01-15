@@ -7,3 +7,6 @@ information for each year, make, and model into a SQL database. A class written 
 information, such as the comboboxes. Java is also used in this application to webscrape data from carsalesbase.com to find the sales number of a selected model
 being sold in the Untied States. This information, complained with the number of vehicle complaints provided by NHTSA, is used to determine a score to calculate the 
 selected model's reliability.
+
+# Other Information
+This program is only designed to work for passenger cars. This includes automakers that are recognized as selling passenger cars by autotrader.com.

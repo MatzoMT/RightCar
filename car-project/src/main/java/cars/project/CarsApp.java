@@ -46,7 +46,7 @@ public class CarsApp extends Application {
         DataCollector dataCollector = new DataCollector();
         ArrayList<Integer> modelYears = dataCollector.getModelYears();
         Text rightCar = new Text("RightCar");
-        Image logo = new Image("file:resources/logo.png", 50, 50, false, false);
+        Image logo = new Image("file:car-project/resources/logo.png");
         ImageView logoView = new ImageView(logo);
         for (int i = 0; i < modelYears.size(); i++) {
             yearComboBox.getItems().add(modelYears.get(i));

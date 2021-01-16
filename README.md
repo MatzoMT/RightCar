@@ -9,4 +9,4 @@ being sold in the Untied States. This information, complained with the number of
 selected model's reliability.
 
 # Other Information
-This program is only designed to work for passenger cars. This includes automakers that are recognized as selling passenger cars by autotrader.com.
+This program is only designed to work for passenger cars, which are more likely to have substantial complaints submitted to NHTSA and sales information available when compared to other vehicles such as recreational vehicles or motorcycles. This includes automakers that are recognized as selling passenger cars by autotrader.com.

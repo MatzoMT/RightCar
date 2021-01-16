@@ -45,8 +45,7 @@ public class CarsApp extends Application {
         WebParser webParser = new WebParser();
         DataCollector dataCollector = new DataCollector();
         ArrayList<Integer> modelYears = dataCollector.getModelYears();
-        Text rightCar = new Text("RightCar");
-        Image logo = new Image("file:car-project/resources/logo.png");
+        Image logo = new Image("file:car-project/resources/logo.png", 200, 200, true, true);
         ImageView logoView = new ImageView(logo);
         for (int i = 0; i < modelYears.size(); i++) {
             yearComboBox.getItems().add(modelYears.get(i));
@@ -74,16 +73,15 @@ public class CarsApp extends Application {
             } // for
         });
 
-        rightCar.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-        rightCar.setFill(Color.WHITE);
+
         titleBar.getChildren().add(logoView);
-         titleBar.getChildren().add(rightCar);
         titleBar.setBackground(
                 new Background(new BackgroundFill(Color.rgb(24, 65, 68), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        yearComboBox.setStyle("-fx-font: 12px \"Verdana\";");
-        makeComboBox.setStyle("-fx-font: 12px \"Verdana\";");
-        modelComboBox.setStyle("-fx-font: 12px \"Verdana\";");
+        yearComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
+        makeComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
+        modelComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
+    //    yearComboBox.setStyle("-fx-pref-width: 150;");
 
         yearComboBox.setPromptText("Year");
         makeComboBox.setPromptText("Make");

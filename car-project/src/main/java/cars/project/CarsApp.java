@@ -1,6 +1,7 @@
 package cars.project;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -42,48 +43,48 @@ public class CarsApp extends Application {
         BorderPane bp = new BorderPane();
         VBox window = new VBox();
         WebParser webParser = new WebParser();
-        int[] modelYears = webParser.getModelYears();
-        Text rightCar = new Text("RightCar");
-        Image logo = new Image("file:resources/logo.png", 50, 50, false, false);
+        DataCollector dataCollector = new DataCollector();
+        ArrayList<Integer> modelYears = dataCollector.getModelYears();
+        Image logo = new Image("file:car-project/resources/logo.png", 200, 200, true, true);
         ImageView logoView = new ImageView(logo);
-        for (int i = 0; i < webParser.getModelYears().length; i++) {
-            if (modelYears[i] != 9999) {
-                yearComboBox.getItems().add(modelYears[i]);
-            }
-        } // for
+        logoView.setX(75);
+        for (int i = 0; i < modelYears.size(); i++) {
+            yearComboBox.getItems().add(modelYears.get(i));
+        }
 
         yearComboBox.setOnAction((event) -> {
             System.out.println(yearComboBox.getValue());
             selectedYear = yearComboBox.getValue();
-            String[] makes = WebParser.getMakes(yearComboBox.getValue());
+            ArrayList<String> makes = DataCollector.getMakes(yearComboBox.getValue());
             makeComboBox.getItems().clear();
-            for (int i = 0; i < WebParser.getMakes(yearComboBox.getValue()).length; i++) {
+            for (int i = 0; i < makes.size(); i++) {
                 System.out.println(i);
-                makeComboBox.getItems().add(makes[i]);
+                makeComboBox.getItems().add(makes.get(i));
             }
             System.out.println("DONEEEEE");
         });
 
         makeComboBox.setOnAction((event) -> {
             selectedMake = makeComboBox.getValue();
-            String[] models = WebParser.getModels(yearComboBox.getValue(), makeComboBox.getValue());
+            ArrayList<String> models = DataCollector.getModels(yearComboBox.getValue(), makeComboBox.getValue());
+          //  String[] models = WebParser.getModels(yearComboBox.getValue(), makeComboBox.getValue());
             modelComboBox.getItems().clear();
-            for (int i = 0; i < models.length; i++) {
+            for (int i = 0; i < models.size(); i++) {
                 System.out.println(i);
-                modelComboBox.getItems().add(models[i]);
+                modelComboBox.getItems().add(models.get(i));
             } // for
         });
 
-        rightCar.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-        rightCar.setFill(Color.WHITE);
+
         titleBar.getChildren().add(logoView);
-         titleBar.getChildren().add(rightCar);
+
         titleBar.setBackground(
                 new Background(new BackgroundFill(Color.rgb(24, 65, 68), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        yearComboBox.setStyle("-fx-font: 12px \"Verdana\";");
-        makeComboBox.setStyle("-fx-font: 12px \"Verdana\";");
-        modelComboBox.setStyle("-fx-font: 12px \"Verdana\";");
+        yearComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
+        makeComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
+        modelComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
+    //    yearComboBox.setStyle("-fx-pref-width: 150;");
 
         yearComboBox.setPromptText("Year");
         makeComboBox.setPromptText("Make");

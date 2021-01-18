@@ -85,4 +85,31 @@ public class DataCollector {
         }
         return makesList;
     } // getMakes
+
+    public static ArrayList<String> getModels(int modelYear, String make) {
+        ArrayList<String> modelsList = new ArrayList<>();
+        String url = "jdbc:mysql://localhost:3306/car_project";
+        String username = "root";
+        String password = "password";
+
+        System.out.println("Connecting database...");
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            System.out.println("Database connected!");
+            String SQL = "select distinct Model from car_project.car_information where year='" + modelYear + "' and make='" + make + "';";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(SQL);
+            while (rs.next()) {
+                String model = rs.getString("Model");
+                modelsList.add(model);
+            }
+           
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot connect the database!", e);
+        }
+        for (int i = 0; i < modelsList.size(); i++) {
+            System.out.println(modelsList.get(i).toString());
+        }
+        return modelsList;
+    } // getModels
 }

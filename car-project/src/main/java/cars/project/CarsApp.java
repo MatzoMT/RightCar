@@ -47,6 +47,7 @@ public class CarsApp extends Application {
         ArrayList<Integer> modelYears = dataCollector.getModelYears();
         Image logo = new Image("file:car-project/resources/logo.png", 200, 200, true, true);
         ImageView logoView = new ImageView(logo);
+        logoView.setX(75);
         for (int i = 0; i < modelYears.size(); i++) {
             yearComboBox.getItems().add(modelYears.get(i));
         }
@@ -65,16 +66,18 @@ public class CarsApp extends Application {
 
         makeComboBox.setOnAction((event) -> {
             selectedMake = makeComboBox.getValue();
-            String[] models = WebParser.getModels(yearComboBox.getValue(), makeComboBox.getValue());
+            ArrayList<String> models = DataCollector.getModels(yearComboBox.getValue(), makeComboBox.getValue());
+          //  String[] models = WebParser.getModels(yearComboBox.getValue(), makeComboBox.getValue());
             modelComboBox.getItems().clear();
-            for (int i = 0; i < models.length; i++) {
+            for (int i = 0; i < models.size(); i++) {
                 System.out.println(i);
-                modelComboBox.getItems().add(models[i]);
+                modelComboBox.getItems().add(models.get(i));
             } // for
         });
 
 
         titleBar.getChildren().add(logoView);
+
         titleBar.setBackground(
                 new Background(new BackgroundFill(Color.rgb(24, 65, 68), CornerRadii.EMPTY, Insets.EMPTY)));
 

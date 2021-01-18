@@ -25,7 +25,7 @@ def parseYears():
     for year in site_json["Results"]:
         if year["ModelYear"] != "9999":
             # Following URL returns list of automakers registered for the selected year
-            url_year = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + year["ModelYear"] + "?format=json"
+            url_year = "https://webapi.nhtsa.gov/api/Complaints/vehicle/modelyear/" + year["ModelYear"] + "?format=json"
             source_code_year = requests.get(url_year)
             plain_text_year = source_code_year.text
             year_site_json = json.loads(plain_text_year)
@@ -33,7 +33,7 @@ def parseYears():
             # for loop that takes the parsed year and automaker to search for its models for that year
             for make in year_site_json["Results"]:
                 try:
-                    url_make = "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + year["ModelYear"] + "/make/" + make["Make"] + "?format=json"
+                    url_make = "https://webapi.nhtsa.gov/api/Complaints/vehicle/modelyear/" + year["ModelYear"] + "/make/" + make["Make"] + "?format=json"
                     source_code_make = requests.get(url_make)
                     plain_text_make = source_code_make.text
                     make_site_json = json.loads(plain_text_make)
@@ -44,12 +44,22 @@ def parseYears():
 
                 # for loop that inserts each model into database
                 for model in make_site_json["Results"]:
-                    print(year["ModelYear"] + " " + make["Make"] + " " + model["Model"])
-                    mycursor = mydb.cursor()
-                    value = [year["ModelYear"],make["Make"],model["Model"]]
-                    print(value)
-                    mycursor.execute('INSERT INTO car_information (Year, Make, Model) VALUES (%s,%s,%s)',value)
-                    mydb.commit()
+                    try:
+                        url_model = "https://webapi.nhtsa.gov/api/Complaints/vehicle/modelyear/" + year["ModelYear"] + "/make/" + make["Make"] + "/model/" + model["Model"] + "?format=json"
+                        source_code_model = requests.get(url_model)
+                        plain_text_model = source_code_model.text
+                        model_site_json = json.loads(plain_text_model)
+
+                        print(year["ModelYear"] + " " + make["Make"] + " " + model["Model"] + " " + str(model_site_json["Count"]))
+                        mycursor = mydb.cursor()
+                        value = [year["ModelYear"],make["Make"],model["Model"],str(model_site_json["Count"])]
+                        print(value)
+                        mycursor.execute('INSERT INTO car_information (Year, Make, Model, Complaints) VALUES (%s,%s,%s,%s)',value)
+                        mydb.commit()
+                    except:
+                        error_count = error_count + 1
+                        error_string = error_string + " " + year["ModelYear"] + " " + make["Make"] + "\n"
+                        print("ERROR")
                 #print(year["ModelYear"] + make["Make"])
 
     print("Number of errors: " + str(error_count))

@@ -9,25 +9,26 @@ import java.util.Properties;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.net.URL;
+import com.google.gson.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.WebAssert;
+// import org.junit.Assert;
 
 public class DataCollector {
 
-    /*
-     * public void writeToCsv() { try { int[] modelYears =
-     * WebParser.getModelYears(); FileWriter csvWriter = new FileWriter("years.csv",
-     * false); csvWriter.write("YEAR,MAKE\n"); for (int i = 0; i <
-     * modelYears.length; i++) { String[] makes = WebParser.getMakes(modelYears[i]);
-     * if (!(String.valueOf(modelYears[i]).equals("9999"))) {
-     * csvWriter.write(String.valueOf(modelYears[i]) + ","); for (int j = 0; j <
-     * makes.length; j++) { csvWriter.write(makes[j]); if (j != makes.length - 1) {
-     * csvWriter.write(","); } } csvWriter.write("\n"); } } // for
-     * System.out.println("completed"); csvWriter.flush(); csvWriter.close(); }
-     * catch (IOException ioe) { System.out.println("IOException occurred"); } }
-     */
-    public static void main(String[] args) {
-        getModelYears();
-
-    }
+    private WebClient webClient;
 
     public static ArrayList<Integer> getModelYears() {
         ArrayList<Integer> yearsList = new ArrayList<>();
@@ -46,7 +47,7 @@ public class DataCollector {
                 int year = rs.getInt("Year");
                 yearsList.add(year);
             }
-           
+
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
@@ -76,7 +77,7 @@ public class DataCollector {
                 String make = rs.getString("Make");
                 makesList.add(make);
             }
-           
+
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
@@ -96,14 +97,15 @@ public class DataCollector {
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             System.out.println("Database connected!");
-            String SQL = "select distinct Model from car_project.car_information where year='" + modelYear + "' and make='" + make + "';";
+            String SQL = "select distinct Model from car_project.car_information where year='" + modelYear
+                    + "' and make='" + make + "';";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(SQL);
             while (rs.next()) {
                 String model = rs.getString("Model");
                 modelsList.add(model);
             }
-           
+
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
@@ -112,4 +114,55 @@ public class DataCollector {
         }
         return modelsList;
     } // getModels
+
+    public static void getImageLink(int year, String make, String model) {
+        /*
+         * if (make.trim().contains(" ") == true) { make = make.replace(" ", "%20"); }
+         * // if if (model.trim().contains(" ") == true) { model = model.replace(" ",
+         * "%20"); } // if make = make.toUpperCase(); model = model.toUpperCase(); try {
+         * String link = "https://www.nhtsa.gov/vehicle/" + year + "/" + make + "/" +
+         * model; //String link =
+         * "https://webapi.nhtsa.gov/api/Recalls/vehicle/modelyear/" + year + "/make/" +
+         * make.toLowerCase() + "/model/" + model + "?format=json";
+         * System.out.println(link); Document document = Jsoup.connect(link).get();
+         * System.out.println(document); Elements elements =
+         * document.getElementsByTag("img"); Element img =
+         * document.select("div.vehicle-base-details").first(); for (Element e:
+         * elements) { String alt = e.attr("alt"); System.out.println("alt:  " + alt); }
+         * System.out.println(img); } catch (IOException ioe) {
+         * System.out.println("error"); }
+         */
+
+    } // getImageLink
+
+    public void givenAClient_whenEnteringBaeldung_thenPageTitleIsOk() throws Exception {
+        HtmlPage page = webClient.getPage("/");
+
+       // Assert.assertEquals("Baeldung | Java, Spring and Web Development tutorials", page.getTitleText());
+    }
+
+    public static int printSales(String year, String make, String model) {
+        int sales = 0;
+        try {
+            String link = "https://carsalesbase.com/us-" + make + "-" + model + "/";
+            System.out.println(link);
+            Document document = Jsoup.connect(link).get();
+            Element table = document.select("table").get(1); // select the first table.
+            Elements rows = table.select("tr");
+            for (int i = 1; i < rows.size(); i++) { // first row is the col names so skip it.
+                Element row = rows.get(i);
+                Elements cols = row.select("td");
+                int intYear = Integer.parseInt(year) - 1;
+                if (cols.get(0).text().equals(String.valueOf(intYear))) {
+                    System.out.println("REACHED");
+                    Element thing = cols.get(1);
+                    sales = Integer.parseInt(thing.text().replace(".", ""));
+                    System.out.println("SALES: " + sales);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sales;
+    } // printSales
 }

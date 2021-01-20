@@ -33,6 +33,7 @@ import javafx.scene.control.ComboBox;
 public class CarsApp extends Application {
     HBox titleBar = new HBox();
     HBox selectionsHBox = new HBox();
+    HBox infoHBox = new HBox();
     ComboBox<Integer> yearComboBox = new ComboBox();
     ComboBox<String> makeComboBox = new ComboBox();
     ComboBox<String> modelComboBox = new ComboBox();
@@ -75,12 +76,26 @@ public class CarsApp extends Application {
             } // for
         });
 
+        modelComboBox.setOnAction((event) -> {
+            DataCollector.getImageLink(yearComboBox.getValue(), makeComboBox.getValue(), modelComboBox.getValue());
+            displayInformation(yearComboBox.getValue(), makeComboBox.getValue(), modelComboBox.getValue());
+        });
+
 
         titleBar.getChildren().add(logoView);
 
         titleBar.setBackground(
-                new Background(new BackgroundFill(Color.rgb(24, 65, 68), CornerRadii.EMPTY, Insets.EMPTY)));
+                new Background(new BackgroundFill(Color.rgb(22, 99, 19), CornerRadii.EMPTY, Insets.EMPTY)));
 
+        selectionsHBox.setBackground(
+            new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        infoHBox.setBackground(
+            new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+        Text placeholder = new Text(" ");
+        infoHBox.getChildren().add(placeholder);
+
+       // logoView.setPadding(new Insets(10));
         yearComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
         makeComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
         modelComboBox.setStyle("-fx-font: 12px \"Verdana\"; -fx-pref-width: 200;");
@@ -90,10 +105,15 @@ public class CarsApp extends Application {
         makeComboBox.setPromptText("Make");
         modelComboBox.setPromptText("Model");
         selectionsHBox.getChildren().addAll(yearComboBox, makeComboBox, modelComboBox);
-       // window.getChildren().addAll(titleBar, selectionsHBox);
+
+        window.getChildren().addAll(titleBar, selectionsHBox);
+        
         bp.setTop(titleBar);
+     //   bp.getChildren().add(selectionsHBox);
         bp.setCenter(selectionsHBox);
+        bp.setBottom(infoHBox);
        // bp.getChildren().addAll(titleBar, selectionsHBox);
+       
         Scene title = new Scene(bp);
         getSelectedYear();
         stage.setScene(title);
@@ -123,5 +143,13 @@ public class CarsApp extends Application {
         t.setDaemon(true);
         t.start();
     } // runNow
+
+    private void displayInformation(int year, String make, String model) {
+        Text yearText = new Text(Integer.toString(year) + " " + make + " " + model);
+        Text salesText = new Text(Integer.toString(DataCollector.printSales(Integer.toString(year), make, model)));
+        yearText.setFont(Font.font("century gothic", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        salesText.setFont(Font.font("century gothic", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        infoHBox.getChildren().addAll(yearText, salesText);
+    }
 
 }

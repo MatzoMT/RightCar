@@ -85,7 +85,6 @@ public class WebParser {
     public double getReliability(double numberComplaints, double sales) {
         double score = (numberComplaints / sales) * 100;
         return score;
-
     }
 
     /**

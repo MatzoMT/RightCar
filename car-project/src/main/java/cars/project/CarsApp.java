@@ -24,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -34,6 +35,7 @@ public class CarsApp extends Application {
     HBox titleBar = new HBox();
     HBox selectionsHBox = new HBox();
     HBox infoHBox = new HBox();
+    Text motto = new Text(500, 100, "Finding better cars.");
     ComboBox<Integer> yearComboBox = new ComboBox();
     ComboBox<String> makeComboBox = new ComboBox();
     ComboBox<String> modelComboBox = new ComboBox();
@@ -45,14 +47,16 @@ public class CarsApp extends Application {
         VBox window = new VBox();
         WebParser webParser = new WebParser();
         DataCollector dataCollector = new DataCollector();
-        ArrayList<Integer> modelYears = dataCollector.getModelYears();
+   //     ArrayList<Integer> modelYears = dataCollector.getModelYears();
         Image logo = new Image("file:car-project/resources/logo.png", 200, 200, true, true);
         ImageView logoView = new ImageView(logo);
-        logoView.setX(75);
+        logoView.setTranslateX(75);
+        /*
         for (int i = 0; i < modelYears.size(); i++) {
             yearComboBox.getItems().add(modelYears.get(i));
         }
-
+*/
+        /*
         yearComboBox.setOnAction((event) -> {
             System.out.println(yearComboBox.getValue());
             selectedYear = yearComboBox.getValue();
@@ -80,9 +84,16 @@ public class CarsApp extends Application {
             DataCollector.getImageLink(yearComboBox.getValue(), makeComboBox.getValue(), modelComboBox.getValue());
             displayInformation(yearComboBox.getValue(), makeComboBox.getValue(), modelComboBox.getValue());
         });
+        */
 
+        motto.setStyle("-fx-font: 20px \"century gothic\"; -fx-pref-width: 200;");
+        motto.setFill(Color.WHITE);
+        motto.setY(500);
+        motto.setTextAlignment(TextAlignment.RIGHT);
 
-        titleBar.getChildren().add(logoView);
+        titleBar.getChildren().addAll(logoView, motto);
+        titleBar.setPadding(new Insets(10, 50, 50, 50));
+        titleBar.setSpacing(10);
 
         titleBar.setBackground(
                 new Background(new BackgroundFill(Color.rgb(22, 99, 19), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -104,6 +115,7 @@ public class CarsApp extends Application {
         yearComboBox.setPromptText("Year");
         makeComboBox.setPromptText("Make");
         modelComboBox.setPromptText("Model");
+        
         selectionsHBox.getChildren().addAll(yearComboBox, makeComboBox, modelComboBox);
 
         window.getChildren().addAll(titleBar, selectionsHBox);

@@ -50,7 +50,7 @@ public class CarsApp extends Application {
    //     ArrayList<Integer> modelYears = dataCollector.getModelYears();
         Image logo = new Image("file:car-project/resources/logo.png", 200, 200, true, true);
         ImageView logoView = new ImageView(logo);
-        logoView.setTranslateX(75);
+    //    logoView.setTranslateX(75);
         /*
         for (int i = 0; i < modelYears.size(); i++) {
             yearComboBox.getItems().add(modelYears.get(i));
@@ -92,8 +92,8 @@ public class CarsApp extends Application {
         motto.setTextAlignment(TextAlignment.RIGHT);
 
         titleBar.getChildren().addAll(logoView, motto);
-        titleBar.setPadding(new Insets(10, 50, 50, 50));
-        titleBar.setSpacing(10);
+        titleBar.setPadding(new Insets(10, 25, 10, 25));
+ //       titleBar.setSpacing(10);
 
         titleBar.setBackground(
                 new Background(new BackgroundFill(Color.rgb(22, 99, 19), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -117,6 +117,7 @@ public class CarsApp extends Application {
         modelComboBox.setPromptText("Model");
         
         selectionsHBox.getChildren().addAll(yearComboBox, makeComboBox, modelComboBox);
+        selectionsHBox.setAlignment(Pos.CENTER);
 
         window.getChildren().addAll(titleBar, selectionsHBox);
         
@@ -129,7 +130,7 @@ public class CarsApp extends Application {
         Scene title = new Scene(bp);
         getSelectedYear();
         stage.setScene(title);
-        stage.setTitle("BetterCar");
+        stage.setTitle("RightCar");
         stage.sizeToScene();
         stage.show();
 
